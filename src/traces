@@ -1,0 +1,98 @@
+text-section:
+
+   0x8049db5 <readString>:      push   %ebp 			;apothikeuei tin palia timi toy ebp sto stack
+   0x8049db6 <readString+1>:    mov    %esp,%ebp		;kanei tin timi toy ebp isi me tin timi toy esp
+   0x8049db8 <readString+3>:    sub    $0x48,%esp		;kanei allocate xwro sto stack gia tis local var
+   0x8049dbb <readString+6>:    movl   $0x0,-0xc(%ebp)		;arxikopoiei tin timi i me 0
+   0x8049dc2 <readString+13>:   mov    0x80e3434,%eax		;fortwnei mia address ston eax
+   0x8049dc7 <readString+18>:   sub    $0xc,%esp		;kanei allocate xwro sto stack 
+   0x8049dca <readString+21>:   push   %eax			;bazei to periexomeno toy eax sto stack
+   0x8049dcb <readString+22>:   call   0x8059530 <getc>		;Kalei tin getc() kai pairnei ena char apo input
+   0x8049dd0 <readString+27>:   add    $0x10,%esp		;apomakrinei to periexomeno toy stack
+   0x8049dd3 <readString+30>:   mov    %eax,-0x10(%ebp)		;apothikeuei to periexomeno poy diabastike
+   0x8049dd6 <readString+33>:   cmpl   $0xffffffff,-0x10(%ebp)	;elegxei an o char einai EOF
+   0x8049dda <readString+37>:   je     0x8049df4 <readString+63>;An einai paei sto telos toy function
+   0x8049ddc <readString+39>:   cmpl   $0xa,-0x10(%ebp)		;elegxei an o char einai \0
+   0x8049de0 <readString+43>:   je     0x8049df4 <readString+63>;An einai paei sto telos toy function
+   0x8049de2 <readString+45>:   mov    -0xc(%ebp),%eax		;fortwnei to i ston eax register
+   0x8049de5 <readString+48>:   lea    0x1(%eax),%edx		;auksanei to i kana 1 kai to apothikeuei sto edx
+   0x8049de8 <readString+51>:   mov    %edx,-0xc(%ebp)		;apothikeuei to apotelesma sto ebp
+   0x8049deb <readString+54>:   mov    -0x10(%ebp),%edx		;fwrtwnei to char poy diabase sto edx
+   0x8049dee <readString+57>:   mov    %dl,-0x40(%ebp,%eax,1)	;apothikeuei to char poy diabase sto buffer Name
+   0x8049df2 <readString+61>:   jmp    0x8049dc2 <readString+13>;epanalambanetai h diadikasia (while)
+   0x8049df4 <readString+63>:   lea    -0x40(%ebp),%edx		;fortwnei tin dieuthinsi toy buffer Name ston edx
+   0x8049df7 <readString+66>:   mov    -0xc(%ebp),%eax		;fortwnei to i ston eax
+   0x8049dfa <readString+69>:   add    %edx,%eax		;prosthetei tin dieuthunsi toy buffer name sto i 
+   0x8049dfc <readString+71>:   movb   $0x0,(%eax)		;bazei to NULL char sto telos tou buffer Name
+   0x8049dff <readString+74>:   movl   $0x0,-0xc(%ebp)		;arxikopoiei to i me tin timi 0
+   0x8049e06 <readString+81>:   jmp    0x8049e21 <readString+108>	;epanalambanei tin diadikasia
+   0x8049e08 <readString+83>:   mov    -0xc(%ebp),%edx		;fortwnei to i ston edx
+   0x8049e0b <readString+86>:   mov    0x8(%ebp),%eax		;fortwnei ton deikti stin prohgoymeni epistrofi
+   0x8049e0e <readString+89>:   add    %eax,%edx		;prostheti ton deikti stin prohgoymeni epistrofi
+   0x8049e10 <readString+91>:   lea    -0x40(%ebp),%ecx		;fortwnei tin dieuthinsi toy buffer Name ston ecx
+   0x8049e13 <readString+94>:   mov    -0xc(%ebp),%eax		;fortwnei to i ston eax
+   0x8049e16 <readString+97>:   add    %ecx,%eax		;prostheti tin dieuthinsi toy buffer Name sto i
+   
+   0x8049e18 <readString+99>:   movzbl (%eax),%eax		;fortwnei to periexomeno tis mnimis ston eax
+   0x8049e1b <readString+102>:  mov    %al,(%edx)		;apothikeiei ta periexomena toy eax stin dieuthinsi poy deixnei o edx
+   0x8049e1d <readString+104>:  addl   $0x1,-0xc(%ebp)		;prosthetei 1 stin i variable
+   0x8049e21 <readString+108>:  cmpl   $0x2f,-0xc(%ebp)		;sugkrisei  toy periexomenoy tis timis i
+   0x8049e25 <readString+112>:  jle    0x8049e08 <readString+83>;an h sygkrisi einai mikroteri isi paei sto label readString+83
+   0x8049e27 <readString+114>:  nop
+   0x8049e28 <readString+115>:  leave				;afairei to trexon frame apo to stack
+   0x8049e29 <readString+116>:  ret				;epistrefei stin sunartisi tin timi apo to prohgoymeno frame
+
+
+data-section:
+
+(gdb) print &grade
+$1 = 0x80e3068 <grade> "3"
+
+(gdb) print grade
+$2 = 51 '3'
+
+
+bss-section:
+
+(gdb) print &Name
+$3 = (char (*)[48]) 0x80e42e0 <Name> //48 megethos toy buffer Name
+
+
+stack-frame:
+
+(gdb) print $esp
+$4 = (void *) 0xbffff450
+
+(gdb) print $ebp
+$5 = (void *) 0xbffff498
+
+x/72b $esp
+0xbffff450:     -64     49      14      8       18      0       0       0
+0xbffff458:     -104    -12     -1      -65     -50     117     5       8
+0xbffff460:     -64     49      14      8       10      0       0       0
+0xbffff468:     18      0       0       0       0       0       96      0
+0xbffff470:     116     -60     12      8       84      3       0       0
+0xbffff478:     0       48      14      8       48      52      14      8
+0xbffff480:     1       0       0       0       116     -11     -1      -65
+0xbffff488:     -117    116     5       8       0       48      14      8
+0xbffff490:     0       48      14      8       -24     -127    4       8
+
+
+Address-Space:
+
+	esp	|        | <---0xbffff450
+
+	buff 	|        | <---0xbffff458
+		|	 |
+		|	 |
+	
+	c	|	 | <---0xbffff488
+
+
+	i 	|        | <---0xbffff48c
+
+	old ebp |        | <---0xbffff498
+	ret	|        |
+
+
+
